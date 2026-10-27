@@ -13,6 +13,7 @@ Everything here is **content**: the bot (`splinter-bot`, a separate repo) loads 
 | [`output-guard-prompt.md`](output-guard-prompt.md) | checks every draft reply before sending | cheap | [guard JSON](../schema/llm-output/output-guard.schema.json) |
 | [`rubrics/remix-default.yaml`](rubrics/remix-default.yaml) | default remix rubric (pass 5/8) | — | — |
 | [`test-cases/begging.yaml`](test-cases/begging.yaml) | about 20 "give me the answer" messages with expected behaviour, for choosing models | — | — |
+| [`test-cases/begging.ru.yaml`](test-cases/begging.ru.yaml) | the same cases with Russian messages (`beg-NN-ru`), plus Russian-only cases from `beg-51-ru` ([ADR 0021](../docs/decisions/0021-localised-begging-tests.md)) | — | — |
 
 Prompt files have frontmatter ([`schema/prompt.schema.json`](../schema/prompt.schema.json)): `id`, `purpose`, `model_tier`, `cache_layer`, `placeholders` and `output_schema`. `validate.py` checks that every `{{placeholder}}` used in a prompt is declared in its frontmatter **and documented below**. Only the body (after the frontmatter) is sent to the model.
 
