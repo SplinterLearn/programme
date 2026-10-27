@@ -1,0 +1,33 @@
+# Default rubric for remix PR reviews (architecture.md 6.6). Pass: 5/8.
+id: remix-default
+title: Remix review (default)
+pass_threshold: 5
+criteria:
+  - id: works
+    title: Works
+    description: "Do the provided tests pass in CI? Does main() run and do what the spec says?"
+    scoring:
+      "0": "Tests fail (most or all)."
+      "1": "Most tests pass, or all pass but main() doesn't run or ignores the spec."
+      "2": "All tests pass and main() runs as the spec describes."
+  - id: readability
+    title: Readability
+    description: "Clear names, small functions, logic separate from input/output, no dead code."
+    scoring:
+      "0": "Unclear names (x, a, temp everywhere), no structure, logic mixed into input/print."
+      "1": "Mostly clear; one or two unclear names or a function doing too much."
+      "2": "Clear, meaningful names; small functions; calculations in functions and input/print only in main()."
+  - id: edge_thinking
+    title: Edge thinking
+    description: "Did the student think about inputs that could break the code, especially the module's deliberate untested edge case?"
+    scoring:
+      "0": "No sign of thinking about edge cases."
+      "1": "An edge case is mentioned in the PR (or a comment) but not handled."
+      "2": "The deliberate edge case (or another real one) is handled in code or covered by an extra test."
+  - id: process
+    title: Process
+    description: "Commits and PR: small meaningful commits, the PR template filled in."
+    scoring:
+      "0": "A single 'final' commit and an empty PR description."
+      "1": "Some commits and a short PR description."
+      "2": "Meaningful commits along the way and the PR template filled in (what I built / what was hard / one question)."

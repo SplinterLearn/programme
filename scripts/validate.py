@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate all programme content against schema/ plus the structural rules.
 
-Usage:  python scripts/validate.py [--quiet]
+Usage:  python scripts/validate.py [--quiet] [--verbose]
 
 Exit code 0 = no errors (warnings are allowed), 1 = errors.
 
@@ -112,6 +112,7 @@ def non_string_keys(data: object, path: str = "") -> list[str]:
 class Report:
     errors: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
+    draft_gaps: dict[str, list[str]] = field(default_factory=dict)
 
     def error(self, where: Path | str, msg: str) -> None:
         self.errors.append(f"{rel(where)}: {msg}")
@@ -120,8 +121,11 @@ class Report:
         self.warnings.append(f"{rel(where)}: {msg}")
 
     def problem(self, strict: bool, where: Path | str, msg: str) -> None:
-        """Error when strict (ready content), warning otherwise (drafts)."""
-        (self.error if strict else self.warn)(where, msg)
+        """Error when strict (ready content); otherwise a draft gap, summarised per file."""
+        if strict:
+            self.error(where, msg)
+        else:
+            self.draft_gaps.setdefault(rel(where), []).append(msg)
 
 
 def rel(p: Path | str) -> str:
@@ -688,7 +692,7 @@ class Validator:
 
     def check_licence_ladder(self) -> None:
         where = ROOT / "tutor" / "licence-levels.yaml"
-        unlocks = {lvl["unlock"].get("block"): lvl["id"] for lvl in self.levels if lvl["unlock"]["on"] == "block_exit"}
+        unlocks = {lvl["unlock"].get("block"): lvl["id"] for lvl in self.levels if lvl["unlock"]["when"] == "block_exit"}
         for bid, block in self.blocks.items():
             expected = unlocks.get(bid)
             if block["licence_unlock_on_exit"] != expected:
@@ -730,15 +734,23 @@ class Validator:
 
 def main(argv: list[str]) -> int:
     quiet = "--quiet" in argv
+    verbose = "--verbose" in argv
     v = Validator()
     report = v.run()
     if not quiet:
         for w in report.warnings:
             print(f"warning: {w}")
+        for where, gaps in report.draft_gaps.items():
+            if verbose:
+                for g in gaps:
+                    print(f"draft: {where}: {g}")
+            else:
+                print(f"draft: {where}: {len(gaps)} unresolved item(s) (expected for drafts; --verbose lists them)")
     for e in report.errors:
         print(f"ERROR: {e}")
     print(
-        f"\n{len(report.errors)} error(s), {len(report.warnings)} warning(s); "
+        f"\n{len(report.errors)} error(s), {len(report.warnings)} warning(s), "
+        f"{sum(len(g) for g in report.draft_gaps.values())} draft gap(s); "
         f"{len(v.blocks)} blocks, {len(v.modules)} module folders, {len(v.track_ids)} tracks; "
         f"{getattr(v, 'todo_verify', 0)} TODO(verify) marker(s)."
     )

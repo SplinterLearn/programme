@@ -18,17 +18,17 @@
             "oneOf": [
               {
                 "type": "object",
-                "properties": { "on": { "const": "start" } },
-                "required": ["on"], "additionalProperties": false
+                "properties": { "when": { "const": "start" } },
+                "required": ["when"], "additionalProperties": false
               },
               {
                 "type": "object",
                 "properties": {
-                  "on": { "const": "block_exit" },
+                  "when": { "const": "block_exit" },
                   "block": { "$ref": "common.schema.json#/$defs/blockId" },
                   "approval": { "const": "parent-or-mentor" }
                 },
-                "required": ["on", "block", "approval"], "additionalProperties": false
+                "required": ["when", "block", "approval"], "additionalProperties": false
               }
             ]
           },
