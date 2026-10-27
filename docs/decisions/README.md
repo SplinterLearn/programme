@@ -26,3 +26,4 @@ One file per decision: `NNNN-short-title.md`, with **Status**, **Context**, **De
 | [0016](0016-git-by-exposure-before-b3.md) | Git by exposure before Block 3 |
 | [0017](0017-starter-files-and-pytest-imports.md) | Starter files and the pytest import convention |
 | [0018](0018-public-repo-generic-roles.md) | Public repo: generic roles, sanitised docs, no third-party content |
+| [0019](0019-b5-resources.md) | Block 5 resources: CS50x weeks 7–9, Odin Foundations for HTML/CSS/JS |

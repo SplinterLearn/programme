@@ -1,0 +1,4 @@
+Treasure map
+============
+X marks the spot: somewhere in haystack/.
+One file there contains the words "golden acorn".

@@ -1,0 +1,2 @@
+N, E, S, W
+(the compass still has its draft name - rename it)

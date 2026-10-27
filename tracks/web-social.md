@@ -10,7 +10,8 @@ example_projects:
 extra_resources:
   - title: The Odin Project — Foundations (HTML, CSS, JavaScript)
     url: https://www.theodinproject.com/paths/foundations/courses/foundations
-    notes: "TODO(verify): exact Foundations lessons to use in Block 5."
+    notes: "Foundations sections: Git Basics, HTML Foundations, CSS Foundations, Flexbox, JavaScript Basics. Candidate for Block 5 (M5.4)."
+    verified_on: 2026-10-27
 status: draft
 ---
 # Track: web-social

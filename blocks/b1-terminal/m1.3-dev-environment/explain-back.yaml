@@ -1,0 +1,92 @@
+scope: m1.3
+questions:
+  - id: m1.3.q1
+    type: concept
+    competencies: [m1.3.c1]
+    tracks: all
+    prompt: "In cs50.dev you have an editor, a terminal and Python. What does each one do when you write and run hello.py?"
+    good_answer_notes: "Editor: write/save the text of the file. Terminal: type commands (python hello.py). Python interpreter: reads the file and runs the instructions, printing output in the terminal."
+    scoring:
+      "0": "Mixes them up."
+      "1": "Two of the three right."
+      "2": "All three roles right, including that Python is the program that runs the file."
+  - id: m1.3.q2
+    type: predict
+    competencies: [m1.3.c1, m1.3.c2]
+    tracks: all
+    prompt: "You edit hello.py but forget to save, then run python hello.py. What runs: the old or the new version? Why?"
+    good_answer_notes: "The old version: Python reads the file on disk; unsaved changes exist only in the editor."
+    scoring:
+      "0": "Thinks the new version runs."
+      "1": "Says old, but can't say why."
+      "2": "Old: Python reads the saved file, not what's in the editor."
+  - id: m1.3.q3
+    type: concept
+    competencies: [m1.3.c3]
+    tracks: all
+    prompt: "What is a commit? Why do developers commit often, with a message each time?"
+    good_answer_notes: "A saved snapshot of the project with a message; history lets you see what changed and go back; small commits with clear messages are easy to review and undo."
+    scoring:
+      "0": "'It saves the file.'"
+      "1": "Snapshot, but no reason for small/often commits."
+      "2": "Snapshot with a message, plus why: history, undo, easier review."
+  - id: m1.3.q4
+    type: trace
+    competencies: [m1.3.c3]
+    tracks: all
+    prompt: "Walk me through what happens between editing notes/bandit.md and seeing the change on github.com: which commands, and what does each do?"
+    good_answer_notes: "git add (stage the file) → git commit -m (snapshot locally) → git push (send commits to GitHub)."
+    scoring:
+      "0": "Can't order them."
+      "1": "Right order, vague on what each does."
+      "2": "add stages, commit snapshots locally, push uploads to GitHub."
+  - id: m1.3.q5
+    type: why
+    competencies: [m1.3.c4]
+    tracks: all
+    prompt: "Why do you work on a branch and open a pull request instead of pushing straight to main?"
+    good_answer_notes: "main stays working; the PR is where tests run and the review happens before merging; the bot only counts modules closed through a PR."
+    scoring:
+      "0": "No reason."
+      "1": "One vague reason."
+      "2": "Keeps main safe, and the PR is where tests and review happen before merging."
+  - id: m1.3.q6
+    type: concept
+    competencies: [m1.3.c5]
+    tracks: all
+    prompt: "What's the difference between running pytest yourself and the green or red check on your PR?"
+    good_answer_notes: "Same tests; locally on your machine vs automatically by GitHub (CI) on every push/PR, so everyone sees the result."
+    scoring:
+      "0": "Doesn't know what the check is."
+      "1": "Knows both run tests but not where/when."
+      "2": "Same tests, run by GitHub automatically on each push/PR (CI) vs by you locally."
+  - id: m1.3.q7
+    type: predict
+    competencies: [m1.3.c5]
+    tracks: all
+    prompt: "pytest prints '8 passed, 2 failed'. Is the hunt done? How do you find out what's wrong?"
+    good_answer_notes: "Not done; read the failure messages (the test name and the assert message point to the task), fix, rerun."
+    scoring:
+      "0": "Thinks it's done or doesn't know where to look."
+      "1": "Not done, but doesn't use the failure output."
+      "2": "Not done; reads the failing test names/messages to find the task to fix."
+  - id: m1.3.q8
+    type: micro-task
+    ai_off: true
+    competencies: [m1.3.c2]
+    tracks: all
+    language: bash
+    code: |
+      $ pwd
+      /workspaces/my-repo
+      $ ls
+      README.md  about-me.md  b1-hunt  notes  scripts
+      $ python hello.py
+      python: can't open file '/workspaces/my-repo/hello.py': [Errno 2] No such file or directory
+    prompt: "hello.py is in the scripts folder. Explain the error, then reproduce the setup in cs50.dev (mkdir scripts, put a one-line print in scripts/hello.py) and paste two different commands that run it, with their output."
+    expected_fix: "Python looks for hello.py in the current folder. Either cd scripts and python hello.py, or python scripts/hello.py from the repo root."
+    good_answer_notes: "Names that the path is relative to the current folder; both commands work and the output is shown."
+    scoring:
+      "0": "No working command, or no explanation."
+      "1": "One working command, or both without the explanation."
+      "2": "Explains the current-folder problem and shows both ways working."

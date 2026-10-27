@@ -1,0 +1,4 @@
+Camp rules
+1. Leave no trace.
+2. Never write passwords down in the repo.
+3. Ask for help after you have tried something.

@@ -1,0 +1,100 @@
+scope: m1.1
+questions:
+  - id: m1.1.q1
+    type: concept
+    competencies: [m1.1.c1]
+    tracks: all
+    prompt: "In your own words: what is the terminal, and what is the shell?"
+    good_answer_notes: "The terminal is the window/program you type into; the shell (e.g. bash) is the program that reads your command, runs it and prints the result. Either level of precision is fine if the 'reads and runs commands' idea is there."
+    scoring:
+      "0": "No idea, or 'it's for hacking'."
+      "1": "A text way to control the computer, without the idea of a program that runs commands."
+      "2": "A program that reads typed commands, runs other programs and shows their output (terminal = window, shell = interpreter)."
+  - id: m1.1.q2
+    type: concept
+    competencies: [m1.1.c1]
+    tracks: all
+    prompt: "Take apart this command: ls -a forest. Which part is the program, which is an option, which is an argument?"
+    good_answer_notes: "ls = program; -a = option (changes how it behaves: show hidden); forest = argument (what to act on)."
+    scoring:
+      "0": "Can't split it."
+      "1": "Splits it but mixes up option and argument."
+      "2": "Program ls, option -a (show hidden files), argument forest (the folder to list)."
+  - id: m1.1.q3
+    type: concept
+    competencies: [m1.1.c2]
+    tracks: all
+    prompt: "What are / and ~ on a Linux or Mac computer? How would you find out which folder you're in right now?"
+    good_answer_notes: "/ is the root, the top of the whole tree; ~ is your home folder. pwd prints the current folder."
+    scoring:
+      "0": "Doesn't know either."
+      "1": "Knows one of them, or both without pwd."
+      "2": "/ root, ~ home, pwd shows where you are."
+  - id: m1.1.q4
+    type: trace
+    competencies: [m1.1.c2, m1.1.c3]
+    tracks: all
+    prompt: "You're in /home/student/projects. You run cd ../notes and then pwd. What does it print? Walk me through it."
+    good_answer_notes: ".. goes up to /home/student, then into notes: /home/student/notes."
+    scoring:
+      "0": "Wrong path with no reasoning."
+      "1": "Right idea (go up, then into notes) but the wrong final path."
+      "2": "/home/student/notes, explaining that .. is the parent folder."
+  - id: m1.1.q5
+    type: why
+    competencies: [m1.1.c3, m1.1.c4]
+    tracks: all
+    prompt: "cd /home/student/notes and cd notes might go to the same place, or not. When do they, and when don't they? Why?"
+    good_answer_notes: "The first is absolute (starts with /, works from anywhere); the second is relative to the current folder, so it only works if you're in /home/student."
+    scoring:
+      "0": "Thinks they're always the same."
+      "1": "Knows one is 'full' but can't say when the short one works."
+      "2": "Absolute starts at / and works from anywhere; relative depends on where you are (only same if you're in /home/student)."
+  - id: m1.1.q6
+    type: predict
+    competencies: [m1.1.c4]
+    tracks: all
+    prompt: "A folder contains notes.txt and .secret. What does ls show? What does ls -a show?"
+    good_answer_notes: "ls shows notes.txt only; ls -a shows ., .., .secret and notes.txt. Names starting with a dot are hidden."
+    scoring:
+      "0": "Thinks both show the same."
+      "1": "Knows -a shows more but not which or why."
+      "2": "ls hides dot-files; ls -a shows .secret (and . and ..)."
+  - id: m1.1.q7
+    type: change
+    competencies: [m1.1.c5]
+    tracks: all
+    prompt: "You have draft.txt. How do you (a) make a copy called backup.txt, (b) rename draft.txt to final.txt? What's the difference between cp and mv?"
+    good_answer_notes: "cp draft.txt backup.txt; mv draft.txt final.txt. cp leaves the original; mv moves/renames, so the original name is gone."
+    scoring:
+      "0": "Neither command right."
+      "1": "One command right, or both right but can't say the difference."
+      "2": "Both right, and cp keeps the original while mv doesn't."
+  - id: m1.1.q8
+    type: edge
+    competencies: [m1.1.c5]
+    tracks: all
+    prompt: "What happens if you run rm -r on the wrong folder? What habits stop that from happening?"
+    good_answer_notes: "It's deleted for good: no bin, no undo. Habits: pwd/ls before rm, type the name carefully (tab-complete), never rm in a hurry, practise in a scratch folder, keep work in git."
+    scoring:
+      "0": "Thinks it can be undone."
+      "1": "Knows it's permanent but no habit."
+      "2": "Permanent, plus at least one concrete habit."
+  - id: m1.1.q9
+    type: micro-task
+    ai_off: true
+    competencies: [m1.1.c3, m1.1.c4]
+    tracks: all
+    language: bash
+    code: |
+      $ pwd
+      /home/student/practice/forest
+      $ cd practice/river
+      bash: cd: practice/river: No such file or directory
+    prompt: "Here's a terminal session. Explain why cd failed, then recreate the folders in your cs50.dev terminal (mkdir -p practice/forest practice/river, then cd practice/forest) and paste a command that does get you into river from there, plus the output of pwd."
+    expected_fix: "practice/river is relative to the current folder, which is already inside practice/forest, so it doesn't exist there. Use cd ../river (or an absolute path)."
+    good_answer_notes: "Names that the path is relative to where you are; working command is cd ../river or an absolute path; pwd output ends in practice/river."
+    scoring:
+      "0": "No working command, or no explanation."
+      "1": "Working command but the explanation is missing or wrong."
+      "2": "Explains the relative-path mistake and shows a working cd plus pwd output."

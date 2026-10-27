@@ -1,0 +1,77 @@
+scope: m0.2
+questions:
+  - id: m0.2.q1
+    type: why
+    competencies: [m0.2.c1]
+    tracks: all
+    prompt: "Why do your commits use the GitHub noreply address instead of your real email?"
+    good_answer_notes: "Commit author emails are visible to anyone who can see the repo, and the repo might become public one day. The noreply address links commits to the account without exposing a real address."
+    scoring:
+      "0": "No reason, or 'because I was told to'."
+      "1": "Says it's for privacy but not what would be exposed or where."
+      "2": "Says the email is stored in every commit and visible to anyone who sees the repo, so a real address would leak."
+  - id: m0.2.q2
+    type: concept
+    competencies: [m0.2.c4]
+    tracks: all
+    prompt: "You're stuck on a CS50 problem set and ask the bot. What happens, and why?"
+    good_answer_notes: "The bot redirects to the CS50 Duck (cs50.ai). CS50's academic honesty rules only allow CS50's own AI on problem sets. No heart is charged."
+    scoring:
+      "0": "Thinks the bot will help, or doesn't know."
+      "1": "Knows they'll be sent to the Duck but not why."
+      "2": "Sent to the Duck because CS50's rules allow only its own AI on problem sets."
+  - id: m0.2.q3
+    type: concept
+    competencies: [m0.2.c4]
+    tracks: all
+    prompt: "Pick two of the five ground rules and say in your own words why they exist."
+    good_answer_notes: "Any two, with a plausible reason, e.g. hints not code so they learn; explain-back so 'done' means understood; being stuck is normal; parents see a summary so they can help."
+    scoring:
+      "0": "Can't name a rule."
+      "1": "Names two rules but gives no reasons, or a reason for only one."
+      "2": "Two rules with a sensible reason each."
+  - id: m0.2.q4
+    type: concept
+    competencies: [m0.2.c5]
+    tracks: all
+    prompt: "What are hearts for? What would you do before spending one?"
+    good_answer_notes: "Hearts limit questions so you think first: re-read the error, try something, look at the notes. Not about money."
+    scoring:
+      "0": "Doesn't know, or thinks they're a punishment or about cost."
+      "1": "Knows they limit questions, without the 'think first' reason."
+      "2": "They nudge you to think and try something first, and names one thing to try before asking."
+  - id: m0.2.q5
+    type: concept
+    competencies: [m0.2.c5]
+    tracks: all
+    prompt: "How does the bot's help change over the year, and who decides when it changes?"
+    good_answer_notes: "Licence ladder L0 to L3: hints → explaining your code → small snippets → supervising an agent. Unlocked by passing block exits; a parent or mentor approves each step."
+    scoring:
+      "0": "Doesn't know about the ladder."
+      "1": "Knows help increases, but not what unlocks it or who approves it."
+      "2": "Help grows after block exits, and a parent or mentor approves each step."
+  - id: m0.2.q6
+    type: predict
+    competencies: [m0.2.c3]
+    tracks: all
+    prompt: "You edited about-me.md and ran git commit, but forgot git push. What does your repo on github.com show, and why?"
+    good_answer_notes: "The change isn't on GitHub yet: the commit exists only in the cs50.dev copy until it's pushed."
+    scoring:
+      "0": "Thinks GitHub shows the change."
+      "1": "Says it won't show but can't say why."
+      "2": "It won't show: the commit is only in the local (cs50.dev) copy until you push."
+  - id: m0.2.q7
+    type: micro-task
+    ai_off: true
+    competencies: [m0.2.c1]
+    tracks: all
+    language: bash
+    code: |
+      git config --global user.email "sam.student.2011@example.com"
+    prompt: "A student set up git with this command. Spot what's wrong for privacy, then run the corrected command in your cs50.dev terminal and paste the output of 'git config --global user.email'."
+    expected_fix: "Use the GitHub noreply address instead: git config --global user.email \"<id>+<username>@users.noreply.github.com\". The original leaks a real-looking email (and a birth year) into every commit."
+    good_answer_notes: "Names that the address is personal and ends up in every commit; output shows a users.noreply.github.com address."
+    scoring:
+      "0": "Doesn't see the problem, or the output isn't a noreply address."
+      "1": "Fixed the setting but can't say why the original was a problem."
+      "2": "Fixed it (noreply address in the output) and explains that the email goes into every commit."

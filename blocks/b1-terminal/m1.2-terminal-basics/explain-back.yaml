@@ -1,0 +1,91 @@
+scope: m1.2
+questions:
+  - id: m1.2.q1
+    type: concept
+    competencies: [m1.2.c1]
+    tracks: all
+    prompt: "In ssh bandit0@bandit.labs.overthewire.org -p 2220, what is each part, and what does ssh actually do?"
+    good_answer_notes: "bandit0 = user, the host = which computer, -p 2220 = port. ssh opens a secure (encrypted) terminal session on a remote computer; commands then run there, not on your machine."
+    scoring:
+      "0": "Can't explain it."
+      "1": "Knows it logs into another computer but can't name the parts."
+      "2": "Names user, host and port, and says commands then run on the remote machine over an encrypted connection."
+  - id: m1.2.q2
+    type: why
+    competencies: [m1.2.c2]
+    tracks: all
+    prompt: "A file is called -notes (with a leading dash). Why does cat -notes fail, and how do you read it?"
+    good_answer_notes: "cat treats anything starting with - as an option. Use cat ./-notes (or cat -- -notes)."
+    scoring:
+      "0": "Doesn't know."
+      "1": "Knows a fix but not why it fails."
+      "2": "The dash makes it look like an option; ./-notes makes it a path."
+  - id: m1.2.q3
+    type: change
+    competencies: [m1.2.c3]
+    tracks: all
+    prompt: "In the hunt you found the hidden lantern file. Show the command you used and say how you'd change it to find every .md file instead."
+    good_answer_notes: "e.g. find haystack -name '.*' -type f or ls -a in folders; change to find haystack -name '*.md'. Quotes stop the shell expanding * too early."
+    scoring:
+      "0": "No working command."
+      "1": "Working command for one, or both without understanding the pattern."
+      "2": "Both commands, with an explanation of the -name pattern."
+  - id: m1.2.q4
+    type: trace
+    competencies: [m1.2.c4]
+    tracks: all
+    prompt: "What does find haystack -name '*.txt' | wc -l do, step by step?"
+    good_answer_notes: "find prints one path per .txt file; | sends that output to wc -l, which counts lines; the result is the number of .txt files."
+    scoring:
+      "0": "Can't explain the pipe."
+      "1": "Knows the result but not how the pipe connects the two."
+      "2": "find lists paths, the pipe feeds them to wc -l, which counts the lines."
+  - id: m1.2.q5
+    type: concept
+    competencies: [m1.2.c5]
+    tracks: all
+    prompt: "You meet a command you've never seen, say sort. How do you find out what it does and what -r does, without asking anyone?"
+    good_answer_notes: "man sort (q to quit) or sort --help; search for -r."
+    scoring:
+      "0": "Would ask the bot or search the web only."
+      "1": "Mentions man or --help but can't use it to answer the -r question."
+      "2": "Uses man/--help and reports what -r does (reverse order)."
+  - id: m1.2.q6
+    type: why
+    competencies: [m1.2.c6]
+    tracks: all
+    prompt: "Why must Bandit passwords never go in your repo, even though it's private and they're 'only a game'?"
+    good_answer_notes: "Anything committed stays in git history even after deletion; repos may become public or be shared; it spoils the game for others; it's the same habit as real API keys."
+    scoring:
+      "0": "'Because it's a rule.'"
+      "1": "Mentions privacy/rules but not git history or the habit."
+      "2": "Commits stay in history forever; repos get shared/public; same habit protects real keys later."
+  - id: m1.2.q7
+    type: edge
+    competencies: [m1.2.c6]
+    tracks: all
+    prompt: "You accidentally committed a password and then deleted the line in a new commit. Is it gone? What should you do?"
+    good_answer_notes: "No: it's still in the earlier commit in the history. Tell the mentor; treat the secret as leaked and change it. (Rewriting history is advanced and comes later.)"
+    scoring:
+      "0": "Thinks deleting the line fixes it."
+      "1": "Knows it's still in history but no action."
+      "2": "Still in history; tell an adult/mentor and change (rotate) the secret."
+  - id: m1.2.q8
+    type: micro-task
+    ai_off: true
+    competencies: [m1.2.c4]
+    tracks: all
+    language: bash
+    code: |
+      $ echo "apples" > list.txt
+      $ echo "bread" > list.txt
+      $ echo "water" > list.txt
+      $ cat list.txt
+      water
+    prompt: "Someone wanted a shopping list with three lines but only got 'water'. Explain why, then fix it in your terminal and paste the commands plus the output of cat list.txt."
+    expected_fix: "> replaces the file each time; use > for the first line and >> for the others (or >> for all lines into an empty file)."
+    good_answer_notes: "Names that > overwrites and >> appends; output shows apples, bread, water."
+    scoring:
+      "0": "No fix, or no explanation."
+      "1": "Fixed output but the explanation is missing or wrong."
+      "2": "Explains overwrite vs append, and the output shows all three lines."
