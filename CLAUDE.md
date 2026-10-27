@@ -43,6 +43,7 @@ This is a **public** curriculum-as-code repo for a teen coding programme. A Tele
 |---|---|
 | Why something is the way it is | [`docs/decisions/`](docs/decisions/) (ADRs). Add one for every new decision. |
 | Design background | [`docs/design/`](docs/design/) (sanitised copies; ADRs win on conflict) |
+| Sources for verified external facts | [`docs/verified-facts.md`](docs/verified-facts.md) (snapshot from 2026-10-27) |
 | Field-by-field format | [`docs/content-format.md`](docs/content-format.md) and [`schema/`](schema/) |
 | Big picture | [`ROADMAP.md`](ROADMAP.md) |
 | Bot prompts and placeholders | [`tutor/`](tutor/), documented in [`tutor/README.md`](tutor/README.md) |
