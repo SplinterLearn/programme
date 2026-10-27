@@ -602,7 +602,7 @@ class Validator:
                 self.r.problem(strict, where, f"{ctx}: question {val!r} not found in explain-back.yaml")
         elif kind == "rubric":
             if not rubric:
-                self.r.error(where, f"{ctx}: {ref} but the module has no rubric (no remix)")
+                self.r.error(where, f"{ctx}: {ref} but the module has no rubric (no remix, or the rubric file is missing)")
             elif not any(c["id"] == val for c in rubric["criteria"]):
                 self.r.error(where, f"{ctx}: rubric criterion {val!r} not in {rubric['id']}")
         elif kind == "check":

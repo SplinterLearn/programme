@@ -1,0 +1,176 @@
+scope: m2.1
+questions:
+  - id: m2.1.q1
+    type: predict
+    competencies: [m2.1.c2, m2.1.c3]
+    tracks: all
+    prompt: "x = input(\"Number: \") and the user types 5. What does print(x * 2) show, and why?"
+    good_answer_notes: "55. input() always returns a str; * 2 on a string repeats it."
+    scoring:
+      "0": "Says 10, with no idea about types."
+      "1": "Says 55 but can't explain why, or explains str but predicts wrong."
+      "2": "55, because input() gives a string and * repeats strings."
+  - id: m2.1.q2
+    type: why
+    competencies: [m2.1.c2, m2.1.c3]
+    tracks: all
+    prompt: "Why did you use int() (or float()) in your main()? What would break if you removed it?"
+    good_answer_notes: "input() returns text; arithmetic and comparisons need numbers. Without it you'd get a TypeError (e.g. str and int in >= or //) or wrong results like string repetition."
+    scoring:
+      "0": "Doesn't know why it's there."
+      "1": "'To make it a number', but can't say what would break."
+      "2": "input() gives a str, so maths/comparisons fail (TypeError) or behave wrongly without converting."
+  - id: m2.1.q3
+    type: trace
+    competencies: [m2.1.c1, m2.1.c4]
+    tracks: [finance]
+    prompt: "Walk me through weeks_to_goal(1000, 0, 300) line by line, using your own code. What's in each variable, and what's returned?"
+    good_answer_notes: "Typically remaining = 1000; 1000 // 300 = 3; 1000 % 300 = 100 > 0 so +1; returns 4. Accept any correct trace of their own code."
+    scoring:
+      "0": "Can't trace it or gets the wrong result."
+      "1": "Right result but skips steps or can't say what % gives."
+      "2": "Correct values at each step, including the role of // and %, and the return value 4."
+  - id: m2.1.q4
+    type: trace
+    competencies: [m2.1.c1, m2.1.c4]
+    tracks: [fandom]
+    prompt: "Walk me through days_to_finish(13, 3) line by line, using your own code. What's in each variable, and what's returned?"
+    good_answer_notes: "13 // 3 = 4; 13 % 3 = 1 > 0 so +1; returns 5. Accept any correct trace of their own code."
+    scoring:
+      "0": "Can't trace it or gets the wrong result."
+      "1": "Right result but skips steps or can't say what % gives."
+      "2": "Correct values at each step, including the role of // and %, and the return value 5."
+  - id: m2.1.q5
+    type: change
+    competencies: [m2.1.c5]
+    tracks: [finance]
+    prompt: "How would you add a 4th verdict, \"halfway\", for 50% and above? Where does it go, and does the order of your elifs matter?"
+    good_answer_notes: "After the 80% check and before else: elif saved >= price * 0.5. Order matters: conditions are checked top to bottom, so if 50% came before 80%, 'almost there' could never be reached."
+    scoring:
+      "0": "Can't place it."
+      "1": "Right place but can't explain why order matters (or vice versa)."
+      "2": "Places it after 80% and explains that the first true condition wins, so a lower threshold first would hide the higher one."
+  - id: m2.1.q6
+    type: change
+    competencies: [m2.1.c5]
+    tracks: [fandom]
+    prompt: "How would you add a new verdict, \"tonight!\", for exactly 1 day? Where does it go, and does the order of your elifs matter?"
+    good_answer_notes: "elif days == 1 before the days <= 2 check. Order matters: the first true condition wins; after <= 2 it would never be reached."
+    scoring:
+      "0": "Can't place it."
+      "1": "Right place but can't explain why order matters (or vice versa)."
+      "2": "Places it before <= 2 and explains that the first true condition wins."
+  - id: m2.1.q7
+    type: edge
+    competencies: [m2.1.c4, m2.1.c5]
+    tracks: [finance]
+    prompt: "What happens if per_week is 0 and you haven't saved enough yet? What should happen instead?"
+    good_answer_notes: "ZeroDivisionError (from // or %). It should not crash: check before dividing (in main or the function) and tell the user they'll never reach it at 0 per week. Bonus: negative per_week."
+    scoring:
+      "0": "Doesn't know, or thinks it returns 0."
+      "1": "Knows it crashes (or names ZeroDivisionError) but no plan."
+      "2": "Names the crash and proposes a sensible check and message (or has already handled it)."
+  - id: m2.1.q8
+    type: edge
+    competencies: [m2.1.c4, m2.1.c5]
+    tracks: [fandom]
+    prompt: "What happens if episodes_per_day is 0 and there are still episodes left? What should happen instead?"
+    good_answer_notes: "ZeroDivisionError (from // or %). It should not crash: check before dividing (in main or the function) and tell the user they'll never finish at 0 a day. Bonus: negative numbers."
+    scoring:
+      "0": "Doesn't know, or thinks it returns 0."
+      "1": "Knows it crashes (or names ZeroDivisionError) but no plan."
+      "2": "Names the crash and proposes a sensible check and message (or has already handled it)."
+  - id: m2.1.q9
+    type: concept
+    competencies: [m2.1.c1, m2.1.c5]
+    tracks: all
+    prompt: "What's the difference between = and ==? Give an example of each from your remix."
+    good_answer_notes: "= assigns a value to a variable; == compares two values and gives True/False."
+    scoring:
+      "0": "Mixes them up."
+      "1": "Correct definitions without examples, or examples without explanation."
+      "2": "= stores, == compares (giving a bool), with an example of each."
+  - id: m2.1.q10
+    type: why
+    competencies: [m2.1.c4]
+    tracks: all
+    prompt: "Your calculation function returns its answer instead of printing it. Why is that better?"
+    good_answer_notes: "A returned value can be used by other code: main() prints it, tests check it, the verdict can use it. Printing only shows it on screen."
+    scoring:
+      "0": "Thinks they're the same."
+      "1": "Says return 'gives back' a value but not why that matters."
+      "2": "Returned values can be reused and tested; print only displays."
+  - id: m2.1.q11
+    type: predict
+    competencies: [m2.1.c3]
+    tracks: all
+    prompt: "weeks = 4. What do print(f\"{weeks} weeks to go\") and print(\"{weeks} weeks to go\") show?"
+    good_answer_notes: "'4 weeks to go' and '{weeks} weeks to go': the f makes it an f-string that fills in {…}."
+    scoring:
+      "0": "Thinks both print 4."
+      "1": "Right outputs, can't say why."
+      "2": "Right outputs; the f prefix is what makes the braces get replaced by the value."
+  - id: m2.1.q12
+    type: predict
+    competencies: [m2.1.c5]
+    tracks: all
+    prompt: "What do these print? print(3 > 2 and 5 < 1), print(3 > 2 or 5 < 1), print(not 5 < 1)"
+    good_answer_notes: "False, True, True. and needs both; or needs one; not flips."
+    scoring:
+      "0": "Two or more wrong."
+      "1": "One wrong, or all right without being able to explain and/or."
+      "2": "All three right, with and/or/not explained."
+  - id: m2.1.q13
+    type: trace
+    competencies: [m2.1.c6]
+    tracks: all
+    prompt: |
+      Read this traceback. Which line failed, what kind of error is it, and what does the message mean?
+
+      Traceback (most recent call last):
+        File "/workspaces/repo/b2-project/plan.py", line 12, in <module>
+          main()
+        File "/workspaces/repo/b2-project/plan.py", line 5, in main
+          print("Total: " + total)
+                ~~~~~~~~~~^~~~~~~
+      TypeError: can only concatenate str (not "int") to str
+    good_answer_notes: "Line 5 in main (the last frame is where it failed); TypeError: trying to + a str and an int. Fix: str(total) or an f-string."
+    scoring:
+      "0": "Points to line 12, or can't read it."
+      "1": "Finds line 5 or names the error, not both."
+      "2": "Line 5, TypeError from adding str and int, and a fix (str() or f-string)."
+  - id: m2.1.q14
+    type: micro-task
+    ai_off: true
+    competencies: [m2.1.c2, m2.1.c6]
+    tracks: all
+    language: python
+    code: |
+      age = input("Age: ")
+      if age >= 13:
+          print("Welcome!")
+    prompt: "No AI for this one, just you and your editor. Save this as fixit.py, run it, read the error, fix it, and run it again. Paste your fixed code, plus one sentence: what was wrong, and on which line did Python complain?"
+    expected_fix: "age = int(input(\"Age: \")): input() returns a str, and comparing a str with an int raises TypeError on line 2."
+    good_answer_notes: "Fix converts to int (int(input(...)) or age = int(age)). Names TypeError (str vs int) and line 2."
+    scoring:
+      "0": "Not fixed."
+      "1": "Fixed, but can't name the error or the line."
+      "2": "Fixed, names the TypeError (str compared with int) and line 2."
+  - id: m2.1.q15
+    type: micro-task
+    ai_off: true
+    competencies: [m2.1.c2, m2.1.c6]
+    tracks: all
+    language: python
+    code: |
+      episodes = input("Episodes left: ")
+      per_day = 3
+      days = episodes // per_day
+      print(f"{days} days to go")
+    prompt: "No AI for this one. Save it as fixit.py, run it with any number, read the error, fix it, run it again. Paste your fixed code and one sentence: what was wrong, and on which line?"
+    expected_fix: "episodes = int(input(\"Episodes left: \")): // can't be used between a str and an int (TypeError on line 3)."
+    good_answer_notes: "Converts the input to int. Names TypeError (unsupported operand str and int) and line 3."
+    scoring:
+      "0": "Not fixed."
+      "1": "Fixed, but can't name the error or the line."
+      "2": "Fixed, names the TypeError and line 3."

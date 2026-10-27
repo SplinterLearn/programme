@@ -1,0 +1,84 @@
+scope: b3.skip
+questions:
+  - id: b3.skip.q1
+    type: concept
+    competencies: [b3.skip.c1, b3.skip.c5]
+    tracks: all
+    prompt: "What is a branch? What happens to main while you work on your branch?"
+    good_answer_notes: "A separate line of commits (a movable pointer to a commit); main doesn't change until something is merged into it."
+    scoring:
+      "0": "Thinks a branch is a copy of the files/folder, or doesn't know."
+      "1": "'A separate version' without saying main is unaffected."
+      "2": "A separate line of commits; main is untouched until a merge."
+  - id: b3.skip.q2
+    type: why
+    competencies: [b3.skip.c2]
+    tracks: all
+    prompt: "Why do teams use pull requests instead of everyone pushing to main?"
+    good_answer_notes: "Review before merging, tests run on the PR, discussion is recorded, main stays working."
+    scoring:
+      "0": "No reason."
+      "1": "One reason."
+      "2": "At least two of: review, automated tests, a record of the discussion, protecting main."
+  - id: b3.skip.q3
+    type: change
+    competencies: [b3.skip.c3]
+    tracks: all
+    prompt: "A reviewer asks for a change on your open PR. What do you do, step by step, so the change shows up in the same PR?"
+    good_answer_notes: "Make the change on the same branch, commit, push; the PR updates automatically; reply to the comment (and resolve it if appropriate)."
+    scoring:
+      "0": "Would open a new PR or edit main."
+      "1": "Commits to the branch but doesn't know the PR updates or doesn't reply."
+      "2": "Commit and push to the same branch (the PR updates itself), then reply to the comment."
+  - id: b3.skip.q4
+    type: concept
+    competencies: [b3.skip.c5]
+    tracks: all
+    prompt: "What is a merge conflict, and why can't git solve it by itself?"
+    good_answer_notes: "Two branches changed the same lines (or one deleted what the other edited); git can't know which change is right, so a human decides."
+    scoring:
+      "0": "Thinks it's an error or a bug in git."
+      "1": "Same lines changed, but not why git needs a human."
+      "2": "Both sides changed the same lines; choosing is a decision about intent, so a person must make it."
+  - id: b3.skip.q5
+    type: why
+    competencies: [b3.skip.c4]
+    tracks: all
+    prompt: "In the staged conflict, how did you decide which side won? What would have been wrong with just keeping your own side?"
+    good_answer_notes: "Followed the team decision in NOTES.md; you decide by intent (what the team agreed, what the code needs), not by whose side it is; sometimes the answer combines both."
+    scoring:
+      "0": "Picked a side at random or always 'mine'."
+      "1": "Followed NOTES.md but can't generalise."
+      "2": "Decided by the agreed intent, and notes that keeping 'mine' could silently undo a teammate's correct change."
+  - id: b3.skip.q6
+    type: edge
+    competencies: [b3.skip.c4]
+    tracks: all
+    prompt: "You resolved the conflict and committed, but a line with >>>>>>> is still in the file. What happens next, and how do you avoid it?"
+    good_answer_notes: "The marker is now in the code: it breaks programs/tests or garbles text. Avoid it by searching for <<<<<<<, =======, >>>>>>> before committing, running tests, checking git diff."
+    scoring:
+      "0": "Thinks git would stop you."
+      "1": "Knows it's bad but no habit."
+      "2": "It's committed and breaks things; search for markers / run tests / read the diff before committing."
+  - id: b3.skip.q7
+    type: micro-task
+    ai_off: true
+    competencies: [b3.skip.c4]
+    tracks: all
+    language: text
+    code: |
+      # Club plan
+      Meeting day: Saturday
+      <<<<<<< HEAD
+      Start time: 10:00
+      =======
+      Start time: 11:00
+      >>>>>>> teammate-branch
+      Snacks: fruit
+    prompt: "No AI. The team agreed on 11:00 in the chat. Write the file exactly as it should look after resolving, and say which lines you removed and why."
+    expected_fix: "# Club plan / Meeting day: Saturday / Start time: 11:00 / Snacks: fruit, with all three marker lines and the 10:00 line removed."
+    good_answer_notes: "Exactly one start time (11:00), no <<<<<<<, ======= or >>>>>>> lines, the other lines unchanged."
+    scoring:
+      "0": "Markers left in, or the wrong time."
+      "1": "Right result but can't explain what the markers mean."
+      "2": "Correct file, and explains HEAD (current branch) vs the incoming branch and that all markers must go."
