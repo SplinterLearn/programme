@@ -170,7 +170,13 @@ class Schemas:
         errs = sorted(validator.iter_errors(data), key=lambda e: list(e.absolute_path))
         for e in errs:
             loc = "/".join(str(p) for p in e.absolute_path) or "(root)"
-            self.report.error(where, f"[{name}] {loc}: {e.message}")
+            if e.validator == "contains":
+                msg = "must contain at least one item matching the rule (explain-back: a micro-task with ai_off: true)"
+            elif len(e.message) > 300:
+                msg = e.message[:150] + " … " + e.message[-120:]
+            else:
+                msg = e.message
+            self.report.error(where, f"[{name}] {loc}: {msg}")
         return not errs
 
 

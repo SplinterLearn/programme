@@ -285,7 +285,7 @@ Bump `VERSION` in the same PR as the schema change. A major bump needs a bot rel
 12. Prompts: placeholders are declared and documented, and `output_schema` exists. Rubric `pass_threshold` ≤ the maximum score.
 13. `schema/VERSION` is semver. `ready` modules contain no `TODO(next-task)`.
 
-**Ready vs draft.** For `ready` modules, missing references, tests or files are **errors**. For `draft` modules they're **warnings**, so drafts can sit on `main` while their tests are written later.
+**Ready vs draft.** For `ready` modules, missing references, tests or files are **errors**. For `draft` modules they're **draft gaps**: reported as one summary line per file (`--verbose` lists them), so drafts can sit on `main` while their tests are written later.
 
 ## Module skeleton
 
