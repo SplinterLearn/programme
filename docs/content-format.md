@@ -242,6 +242,8 @@ Two kinds:
 
 See [`tutor/README.md`](../tutor/README.md). Prompts are Markdown with frontmatter (`schema/prompt.schema.json`) and `{{placeholders}}`. Every placeholder used must be declared in the prompt's frontmatter and documented in `tutor/README.md`. Prompts that produce JSON name their `output_schema` in `schema/llm-output/`.
 
+Begging tests: `tutor/test-cases/begging.yaml` (`schema/begging-tests.schema.json`, ids `beg-NN`, numbers below 50) and optional localised files `begging.<lang>.yaml` (`schema/begging-tests-localised.schema.json`), where only the student `message` is in that language. A localised case `beg-NN-<lang>` with NN below 50 translates `beg-NN` and keeps its `context` and `expected` unchanged. Cases numbered 50 and up exist only in that language. `tactic`, `description` and `expected` stay in English ([ADR 0021](decisions/0021-localised-begging-tests.md)).
+
 ## Student repo conventions
 
 The student template is a separate repo ([splinterlearn/student-template](https://github.com/splinterlearn/student-template)). It holds only the skeleton. Everything else arrives from here when a module starts:
@@ -282,7 +284,7 @@ Bump `VERSION` in the same PR as the schema change. A major bump needs a bot rel
 9. `explain_back: true` ⇔ `explain-back.yaml` exists. `remix: null` ⇒ no `remix.md`.
 10. Skip tests: the id is `<block>-skip`; `module-gates` lists all of the block's modules in order; `tasks` coverage resolves; sample sizes fit the bank.
 11. Licence ladder: each block's `licence_level` and `licence_unlock_on_exit` agree with `tutor/licence-levels.yaml`.
-12. Prompts: placeholders are declared and documented, and `output_schema` exists. Rubric `pass_threshold` ≤ the maximum score.
+12. Prompts: placeholders are declared and documented, and `output_schema` exists. Rubric `pass_threshold` ≤ the maximum score. Begging tests: ids are unique per file, `begging.yaml` ids are numbered below 50, and in `begging.<lang>.yaml` every id ends with `-<lang>`, `defaults` equal `begging.yaml`'s, and each case numbered below 50 has the same `context` and `expected` as its original (a missing translation is a warning).
 13. `schema/VERSION` is semver. `ready` modules contain no `TODO(next-task)`.
 
 **Ready vs draft.** For `ready` modules, missing references, tests or files are **errors**. For `draft` modules they're **draft gaps**: reported as one summary line per file (`--verbose` lists them), so drafts can sit on `main` while their tests are written later.

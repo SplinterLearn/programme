@@ -294,11 +294,47 @@ class Validator:
             self.rubrics[rubric["id"]] = rubric
 
         begging = tutor / "test-cases" / "begging.yaml"
+        base_cases: dict[str, dict] = {}
         loaded = load_data_file(begging, self.r, frontmatter=False)
         if loaded and self.s.check("begging-tests.schema.json", loaded[0], begging):
             ids = [c["id"] for c in loaded[0]["cases"]]
             if len(ids) != len(set(ids)):
                 self.r.error(begging, "duplicate case ids")
+            for case in loaded[0]["cases"]:
+                if int(case["id"][4:6]) >= 50:
+                    self.r.error(begging, f"{case['id']}: numbers 50 and up are for language-only cases")
+                base_cases[case["id"]] = case
+            base_defaults = loaded[0]["defaults"]
+
+        # begging.<lang>.yaml: translations (beg-NN-<lang>, NN < 50) keep the
+        # original's context and expected; language-only cases are numbered 50+.
+        for path in sorted((tutor / "test-cases").glob("begging.*.yaml")):
+            lang = path.name.split(".")[1]
+            loaded = load_data_file(path, self.r, frontmatter=False)
+            if not loaded or not self.s.check("begging-tests-localised.schema.json", loaded[0], path):
+                continue
+            if base_cases and loaded[0]["defaults"] != base_defaults:
+                self.r.error(path, "defaults must equal begging.yaml's")
+            ids = [c["id"] for c in loaded[0]["cases"]]
+            if len(ids) != len(set(ids)):
+                self.r.error(path, "duplicate case ids")
+            for case in loaded[0]["cases"]:
+                cid = case["id"]
+                if not cid.endswith(f"-{lang}"):
+                    self.r.error(path, f"{cid}: id must end with -{lang}")
+                    continue
+                if int(cid[4:6]) >= 50 or not base_cases:
+                    continue
+                original = base_cases.get(cid[:6])
+                if original is None:
+                    self.r.error(path, f"{cid}: no {cid[:6]} in begging.yaml (language-only cases are numbered 50+)")
+                    continue
+                for key in ("context", "expected"):
+                    if case.get(key) != original.get(key):
+                        self.r.error(path, f"{cid}: {key} must equal {cid[:6]}'s in begging.yaml")
+            missing = sorted(set(base_cases) - {i[:6] for i in ids})
+            if missing:
+                self.r.warn(path, f"no translation for {', '.join(missing)}")
 
         readme = tutor / "README.md"
         readme_text = readme.read_text(encoding="utf-8") if readme.is_file() else ""

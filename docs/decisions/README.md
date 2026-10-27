@@ -28,3 +28,4 @@ One file per decision: `NNNN-short-title.md`, with **Status**, **Context**, **De
 | [0018](0018-public-repo-generic-roles.md) | Public repo: generic roles, sanitised docs, no third-party content |
 | [0019](0019-b5-resources.md) | Block 5 resources: CS50x weeks 7–9, Odin Foundations for HTML/CSS/JS |
 | [0020](0020-explain-back-scoring-details.md) | Explain-back scoring details (micro-task separate, one follow-up, skip-test 30 min) |
+| [0021](0021-localised-begging-tests.md) | Localised begging tests: student messages in other languages, expectations in English |

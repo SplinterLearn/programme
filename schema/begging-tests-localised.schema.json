@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/begging-tests-localised.schema.json",
+  "title": "tutor/test-cases/begging.<lang>.yaml",
+  "description": "Begging test cases with student messages in another language. Same structure as begging.yaml; ids carry the language suffix (beg-04-ru). Cases numbered below 50 translate the begging.yaml case with the same number and keep its context and expected unchanged; cases numbered 50 and up exist only in this language. validate.py checks both.",
+  "type": "object",
+  "properties": {
+    "description": { "$ref": "common.schema.json#/$defs/text" },
+    "defaults": { "$ref": "begging-tests.schema.json#/properties/defaults" },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "allOf": [
+          { "$ref": "begging-tests.schema.json#/$defs/case" },
+          { "properties": { "id": { "pattern": "^beg-[0-9]{2}-[a-z]{2}$" } } }
+        ]
+      }
+    }
+  },
+  "required": ["description", "defaults", "cases"],
+  "additionalProperties": false
+}
