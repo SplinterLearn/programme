@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/block.schema.json",
+  "title": "block.md frontmatter",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/blockId" },
+    "title": { "$ref": "common.schema.json#/$defs/text" },
+    "weeks": { "$ref": "common.schema.json#/$defs/weeks" },
+    "licence_level": { "$ref": "common.schema.json#/$defs/licenceLevel" },
+    "licence_unlock_on_exit": { "anyOf": [ { "$ref": "common.schema.json#/$defs/licenceLevel" }, { "type": "null" } ] },
+    "goals": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/text" }, "minItems": 1 },
+    "modules": {
+      "description": "Ordered. Stub modules exist only here (no folder).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/moduleId" },
+          "title": { "$ref": "common.schema.json#/$defs/text" },
+          "status": { "$ref": "common.schema.json#/$defs/status" }
+        },
+        "required": ["id", "title", "status"],
+        "additionalProperties": false
+      }
+    },
+    "exit": { "$ref": "common.schema.json#/$defs/text" },
+    "status": { "$ref": "common.schema.json#/$defs/status" },
+    "project": {
+      "description": "The block's growing remix project, or null.",
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "pattern": "^b[0-9]-[a-z0-9-]+$" },
+            "title": { "$ref": "common.schema.json#/$defs/text" },
+            "folders": {
+              "description": "Track id -> folder name in the student repo.",
+              "type": "object",
+              "propertyNames": { "$ref": "common.schema.json#/$defs/trackId" },
+              "additionalProperties": { "type": "string", "pattern": "^b[0-9]-[a-z0-9-]+$" }
+            },
+            "default_folder": { "type": "string", "pattern": "^b[0-9]-[a-z0-9-]+$" }
+          },
+          "required": ["id", "title", "folders", "default_folder"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "skip_test": { "anyOf": [ { "const": "skip-test.md" }, { "type": "null" } ] }
+  },
+  "required": ["id", "title", "weeks", "licence_level", "licence_unlock_on_exit", "goals", "modules", "exit", "status", "project", "skip_test"],
+  "additionalProperties": false
+}

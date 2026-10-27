@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/llm-output/review.schema.json",
+  "title": "PR review output (tutor/review-prompt.md)",
+  "type": "object",
+  "properties": {
+    "module": { "type": "string", "pattern": "^m[0-9]\\.[0-9]+$" },
+    "track": { "type": "string" },
+    "scores": {
+      "description": "Rubric criterion id -> 0, 1 or 2.",
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0, "maximum": 2 },
+      "minProperties": 1
+    },
+    "total": { "type": "integer", "minimum": 0 },
+    "max": { "type": "integer", "minimum": 1 },
+    "pass": { "type": "boolean" },
+    "strengths": { "type": "array", "items": { "type": "string" }, "maxItems": 3 },
+    "fixes": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "line": { "anyOf": [ { "type": "integer", "minimum": 1 }, { "type": "null" } ] },
+          "issue": { "type": "string" },
+          "hint": { "type": "string", "description": "A question or nudge. Never the corrected code." }
+        },
+        "required": ["file", "line", "issue", "hint"],
+        "additionalProperties": false
+      }
+    },
+    "edge_case": {
+      "type": "object",
+      "properties": {
+        "summary": { "type": "string" },
+        "status": { "enum": ["handled", "tested", "mentioned", "missing"] },
+        "note": { "type": "string" }
+      },
+      "required": ["summary", "status", "note"],
+      "additionalProperties": false
+    },
+    "explain_back_prep": {
+      "description": "Things the student should be ready to explain in /check.",
+      "type": "array", "items": { "type": "string" }, "maxItems": 3
+    },
+    "process_notes": { "type": "array", "items": { "type": "string" }, "maxItems": 3 },
+    "comment_markdown": { "type": "string", "minLength": 1 }
+  },
+  "required": ["module", "track", "scores", "total", "max", "pass", "strengths", "fixes", "edge_case", "explain_back_prep", "process_notes", "comment_markdown"],
+  "additionalProperties": false
+}

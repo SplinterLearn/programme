@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/module.schema.json",
+  "title": "module.md frontmatter",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/moduleId" },
+    "block": { "$ref": "common.schema.json#/$defs/blockId" },
+    "title": { "$ref": "common.schema.json#/$defs/text" },
+    "status": { "enum": ["ready", "draft"] },
+    "weeks": { "$ref": "common.schema.json#/$defs/weeks" },
+    "est_sessions": { "type": "integer", "minimum": 1, "maximum": 20 },
+    "licence_level": { "$ref": "common.schema.json#/$defs/licenceLevel" },
+    "competencies": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/competency" }, "minItems": 1 },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": { "$ref": "common.schema.json#/$defs/text" },
+          "url": { "$ref": "common.schema.json#/$defs/url" },
+          "role": { "enum": ["backbone", "fallback", "extra", "optional"] },
+          "notes": { "type": "string" },
+          "verified_on": { "$ref": "common.schema.json#/$defs/date" }
+        },
+        "required": ["title", "url", "role", "notes"],
+        "additionalProperties": false
+      }
+    },
+    "sessions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "type": { "enum": ["lecture", "pset", "remix", "quiz", "reading", "practice", "interview", "setup"] },
+          "title": { "$ref": "common.schema.json#/$defs/text" },
+          "where": { "$ref": "common.schema.json#/$defs/text" },
+          "ai": {
+            "description": "Which AI help is allowed. pset sessions put the bot in Duck mode.",
+            "enum": ["bot-predict", "bot-quiz", "bot-interview", "bot-L0", "bot-L1", "bot-L2", "bot-L3", "duck", "off", "mentor"]
+          },
+          "notes": { "type": "string" }
+        },
+        "required": ["n", "type", "title", "where", "ai"],
+        "additionalProperties": false,
+        "if": { "properties": { "type": { "const": "pset" } } },
+        "then": { "properties": { "ai": { "const": "duck" } } }
+      }
+    },
+    "cs50_fingerprints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "problem": { "$ref": "common.schema.json#/$defs/text" },
+          "pset": { "type": "integer", "minimum": 0, "maximum": 9 },
+          "filename": { "type": "string", "pattern": "^[a-z0-9_]+\\.py$" },
+          "required_functions": { "type": "array", "items": { "type": "string", "pattern": "^[a-z_][a-z0-9_]*$" } },
+          "distinctive_strings": {
+            "description": "Short tokens (at most 4 words each) likely to appear in a submission. Never problem text.",
+            "type": "array", "items": { "type": "string", "minLength": 1, "maxLength": 40 }
+          },
+          "summary": {
+            "description": "One line, in our own words, for the classifier.",
+            "type": "string", "minLength": 10, "maxLength": 160, "pattern": "^[^\\n]+$"
+          }
+        },
+        "required": ["problem", "pset", "filename", "required_functions", "distinctive_strings", "summary"],
+        "additionalProperties": false
+      }
+    },
+    "checks": {
+      "description": "Non-code gate items verified by the bot or the mentor.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/checkId" },
+          "text": { "$ref": "common.schema.json#/$defs/text" },
+          "verified_by": { "enum": ["bot", "mentor", "ci"] }
+        },
+        "required": ["id", "text", "verified_by"],
+        "additionalProperties": false
+      }
+    },
+    "explain_back": { "type": "boolean" },
+    "remix": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "project_id": { "type": "string", "pattern": "^b[0-9]-[a-z0-9-]+$" },
+            "step": { "type": "integer", "minimum": 1 },
+            "tracks": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/trackId" }, "uniqueItems": true },
+            "brief_only_tracks": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/trackId" }, "uniqueItems": true },
+            "rubric": { "$ref": "common.schema.json#/$defs/rubricId" },
+            "edge_case": {
+              "type": "object",
+              "properties": {
+                "summary": { "$ref": "common.schema.json#/$defs/text" },
+                "per_track": {
+                  "type": "object",
+                  "propertyNames": { "$ref": "common.schema.json#/$defs/trackId" },
+                  "additionalProperties": { "$ref": "common.schema.json#/$defs/text" }
+                },
+                "covered_by": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/gateRef" }, "minItems": 1 }
+              },
+              "required": ["summary", "per_track", "covered_by"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["project_id", "step", "tracks", "brief_only_tracks", "rubric", "edge_case"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "coverage": { "$ref": "common.schema.json#/$defs/coverage" },
+    "skip_gate": {
+      "type": "object",
+      "properties": {
+        "time_box_minutes": { "type": "integer", "minimum": 10, "maximum": 180 },
+        "ai": { "const": "off" }
+      },
+      "required": ["time_box_minutes", "ai"],
+      "additionalProperties": false
+    },
+    "student_files": {
+      "description": "Files copied into the student repo when the module starts. {track} and {project_dir} are expanded per track. A trailing / copies a folder's contents.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": { "type": "string", "pattern": "^[^/.][^\\s]*$" },
+          "to": { "type": "string", "pattern": "^[^/.][^\\s]*$" }
+        },
+        "required": ["from", "to"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["id", "block", "title", "status", "weeks", "est_sessions", "licence_level", "competencies", "resources",
+               "sessions", "cs50_fingerprints", "checks", "explain_back", "remix", "coverage", "skip_gate", "student_files"],
+  "additionalProperties": false
+}

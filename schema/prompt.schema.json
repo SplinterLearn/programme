@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/prompt.schema.json",
+  "title": "Prompt file frontmatter (tutor/*.md)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+    "purpose": { "$ref": "common.schema.json#/$defs/text" },
+    "model_tier": { "enum": ["cheap", "strong"] },
+    "cache_layer": {
+      "description": "Position in the cache-friendly context order (1 = most static). See tutor/README.md.",
+      "type": "integer", "minimum": 1, "maximum": 5
+    },
+    "placeholders": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true },
+    "output_schema": {
+      "anyOf": [ { "type": "string", "pattern": "^schema/llm-output/[a-z0-9-]+\\.schema\\.json$" }, { "type": "null" } ]
+    }
+  },
+  "required": ["id", "purpose", "model_tier", "cache_layer", "placeholders", "output_schema"],
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/track.schema.json",
+  "title": "tracks/<id>.md frontmatter",
+  "type": "object",
+  "properties": {
+    "id": { "$ref": "common.schema.json#/$defs/trackId" },
+    "title": { "$ref": "common.schema.json#/$defs/text" },
+    "summary": { "$ref": "common.schema.json#/$defs/text" },
+    "example_projects": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/text" }, "minItems": 1 },
+    "extra_resources": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/link" } },
+    "status": { "enum": ["ready", "ready-for-pilot", "draft"] }
+  },
+  "required": ["id", "title", "summary", "example_projects", "extra_resources", "status"],
+  "additionalProperties": false
+}

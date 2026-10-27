@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/llm-output/onboarding-summary.schema.json",
+  "title": "Onboarding interview summary (tutor/onboarding-interview.md)",
+  "description": "Contains no personal details: no names, ages, schools, locations, contacts.",
+  "type": "object",
+  "properties": {
+    "goals": { "type": "array", "items": { "type": "string" }, "minItems": 1, "maxItems": 5 },
+    "dream_projects": { "type": "array", "items": { "type": "string" }, "maxItems": 5 },
+    "track_ranking": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "track": { "enum": ["fandom", "biology", "finance", "web-social", "games", "ai-ml", "hardware", "automation"] },
+          "fit": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "why": { "type": "string" }
+        },
+        "required": ["track", "fit", "why"],
+        "additionalProperties": false
+      }
+    },
+    "recommended_track": { "enum": ["fandom", "biology", "finance", "web-social", "games", "ai-ml", "hardware", "automation"] },
+    "experience": {
+      "type": "object",
+      "properties": {
+        "terminal": { "enum": ["none", "some", "confident"] },
+        "python": { "enum": ["none", "some", "confident"] },
+        "git": { "enum": ["none", "some", "confident"] },
+        "web": { "enum": ["none", "some", "confident"] },
+        "other": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["terminal", "python", "git", "web", "other"],
+      "additionalProperties": false
+    },
+    "skip_test_offers": {
+      "description": "Skip tests to offer, from the experience flags (e.g. b1-skip, b3-skip, m2.1).",
+      "type": "array", "items": { "type": "string", "pattern": "^(b[0-9]-skip|m[0-9]\\.[0-9]+)$" }
+    },
+    "time_budget": {
+      "type": "object",
+      "properties": {
+        "hours_per_week": { "type": "number", "minimum": 0, "maximum": 20 },
+        "sessions_per_week": { "type": "integer", "minimum": 0, "maximum": 7 }
+      },
+      "required": ["hours_per_week", "sessions_per_week"],
+      "additionalProperties": false
+    },
+    "preferred_language": { "type": "string", "description": "Language for chatting with the tutor, e.g. 'en'." },
+    "notes_for_mentor": { "type": "string" },
+    "about_me_md": { "type": "string", "minLength": 1, "description": "Draft about-me.md, no personal details." }
+  },
+  "required": ["goals", "dream_projects", "track_ranking", "recommended_track", "experience", "skip_test_offers", "time_budget", "preferred_language", "notes_for_mentor", "about_me_md"],
+  "additionalProperties": false
+}

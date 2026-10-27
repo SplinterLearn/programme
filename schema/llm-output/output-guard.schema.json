@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/llm-output/output-guard.schema.json",
+  "title": "Output guard verdict (tutor/output-guard-prompt.md)",
+  "type": "object",
+  "properties": {
+    "gives_away": { "type": "boolean", "description": "true = the draft reply gives away code that solves the student's current task at their licence level." },
+    "category": { "enum": ["ok", "solution-code", "too-many-steps", "cs50-help", "secret-or-personal-data", "other"] },
+    "reason": { "type": "string", "minLength": 1 },
+    "offending_excerpt": { "anyOf": [ { "type": "string", "maxLength": 300 }, { "type": "null" } ] }
+  },
+  "required": ["gives_away", "category", "reason", "offending_excerpt"],
+  "additionalProperties": false
+}

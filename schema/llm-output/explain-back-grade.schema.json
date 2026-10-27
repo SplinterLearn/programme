@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/llm-output/explain-back-grade.schema.json",
+  "title": "Grade for one explain-back answer (tutor/explain-back-protocol.md)",
+  "type": "object",
+  "properties": {
+    "question_id": { "type": "string", "pattern": "^(m[0-9]\\.[0-9]+|b[0-9]\\.skip)\\.q[0-9]+$" },
+    "score": { "type": "integer", "minimum": 0, "maximum": 2 },
+    "micro_task_correct": {
+      "description": "Only for micro-task questions: did the fix work and is the cause named? null otherwise.",
+      "anyOf": [ { "type": "boolean" }, { "type": "null" } ]
+    },
+    "rationale": { "type": "string", "description": "For the mentor: which anchor the answer matched and why." },
+    "feedback": { "type": "string", "description": "One or two friendly sentences for the student, in their language." },
+    "suspected_ai_use": { "type": "boolean", "description": "True if the answer reads like pasted AI output." },
+    "follow_up": { "anyOf": [ { "type": "string" }, { "type": "null" } ], "description": "At most one clarifying follow-up, or null." }
+  },
+  "required": ["question_id", "score", "micro_task_correct", "rationale", "feedback", "suspected_ai_use", "follow_up"],
+  "additionalProperties": false
+}

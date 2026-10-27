@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/remix.schema.json",
+  "title": "remix.md frontmatter",
+  "description": "The body has one '## Track: <id>' section per track in the module's remix.tracks and remix.brief_only_tracks.",
+  "type": "object",
+  "properties": {
+    "module": { "$ref": "common.schema.json#/$defs/moduleId" },
+    "step": { "type": "integer", "minimum": 1 }
+  },
+  "required": ["module", "step"],
+  "additionalProperties": false
+}

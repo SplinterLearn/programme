@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/explain-back.schema.json",
+  "title": "Explain-back question bank",
+  "type": "object",
+  "properties": {
+    "scope": { "$ref": "common.schema.json#/$defs/ownerId" },
+    "questions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/questionId" },
+          "type": { "enum": ["predict", "why", "trace", "change", "edge", "concept", "micro-task"] },
+          "competencies": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/competencyId" }, "minItems": 1, "uniqueItems": true },
+          "tracks": {
+            "anyOf": [
+              { "const": "all" },
+              { "type": "array", "items": { "$ref": "common.schema.json#/$defs/trackId" }, "minItems": 1, "uniqueItems": true }
+            ]
+          },
+          "prompt": { "$ref": "common.schema.json#/$defs/text" },
+          "good_answer_notes": { "$ref": "common.schema.json#/$defs/text" },
+          "scoring": { "$ref": "common.schema.json#/$defs/scoring" },
+          "ai_off": { "type": "boolean" },
+          "language": { "enum": ["python", "bash", "text", "git", "html", "javascript", "sql"] },
+          "code": { "type": "string", "minLength": 1 },
+          "expected_fix": { "$ref": "common.schema.json#/$defs/text" }
+        },
+        "required": ["id", "type", "competencies", "tracks", "prompt", "good_answer_notes", "scoring"],
+        "additionalProperties": false,
+        "if": { "properties": { "type": { "const": "micro-task" } } },
+        "then": {
+          "required": ["ai_off", "language", "code", "expected_fix"],
+          "properties": { "ai_off": { "const": true } }
+        }
+      },
+      "contains": {
+        "properties": { "type": { "const": "micro-task" }, "ai_off": { "const": true } },
+        "required": ["type", "ai_off"]
+      },
+      "minContains": 1
+    }
+  },
+  "required": ["scope", "questions"],
+  "additionalProperties": false
+}

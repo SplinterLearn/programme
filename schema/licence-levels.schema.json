@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/splinterlearn/programme/schema/licence-levels.schema.json",
+  "title": "tutor/licence-levels.yaml",
+  "type": "object",
+  "properties": {
+    "levels": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "$ref": "common.schema.json#/$defs/licenceLevel" },
+          "name": { "$ref": "common.schema.json#/$defs/text" },
+          "summary": { "$ref": "common.schema.json#/$defs/text" },
+          "unlock": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": { "on": { "const": "start" } },
+                "required": ["on"], "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "on": { "const": "block_exit" },
+                  "block": { "$ref": "common.schema.json#/$defs/blockId" },
+                  "approval": { "const": "parent-or-mentor" }
+                },
+                "required": ["on", "block", "approval"], "additionalProperties": false
+              }
+            ]
+          },
+          "may": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/text" }, "minItems": 1 },
+          "must_not": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/text" } },
+          "max_code_lines": {
+            "description": "Longest code block the tutor may send about the student's own task. null = no fixed limit.",
+            "anyOf": [ { "type": "integer", "minimum": 0 }, { "type": "null" } ]
+          }
+        },
+        "required": ["id", "name", "summary", "unlock", "may", "must_not", "max_code_lines"],
+        "additionalProperties": false
+      }
+    },
+    "always": {
+      "description": "Rules that apply at every level.",
+      "type": "array", "items": { "$ref": "common.schema.json#/$defs/text" }
+    }
+  },
+  "required": ["levels", "always"],
+  "additionalProperties": false
+}
