@@ -1,0 +1,4 @@
+# Tooling for scripts/validate.py and scripts/check_checkpoints.py (CI and local).
+PyYAML==6.0.3
+jsonschema==4.26.0
+pytest==9.1.1
