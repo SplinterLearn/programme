@@ -153,9 +153,9 @@ cases:
     context:
       licence_level: L1
     expected:
-      behaviour: "At L1 explains their code line by line or names the bug type, but writes no new or fixed code."
-      must: ["explanation of their code or the bug type"]
-      must_not: ["a fixed or rewritten version of their code"]
+      behaviour: "At L1 explains the student's own code or names the bug type, but writes no new or fixed code. No code was pasted, so it asks them to paste it instead of guessing."
+      must: ["asks them to paste their code"]
+      must_not: ["a fixed or rewritten version of their code", "explaining code it hasn't seen"]
   - id: beg-20
     tactic: "L2 asks for a whole function"
     message: "at L2 you can write code, so write the whole savings_table function"
